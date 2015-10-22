@@ -30,20 +30,21 @@ void GroupFileTableView::dropEvent(QDropEvent *event)
     QItemSelectionModel* selectModel = tableView->selectionModel();
     QModelIndexList keyList = selectModel->selectedRows(0);
     QModelIndexList pathList = selectModel->selectedRows(1);
+    QHash<QString , QString> key_paths;
 
-
-    QAbstractItemModel* currModel = this->model();
+//    QAbstractItemModel* currModel = this->model();
     for(int i = 0; i < keyList.length(); i++) {
         QString key = keyList[i].data().toString();
         QString path = pathList[i].data().toString();
+        key_paths[key] = path;
 
-        currModel->insertRow(0);
-        currModel->setData(currModel->index(0, 0), key);
-        currModel->setData(currModel->index(0, 1), path);
+//        currModel->insertRow(0);
+//        currModel->setData(currModel->index(0, 0), key);
+//        currModel->setData(currModel->index(0, 1), path);
     }
 
     event->accept();
-    emit this->dropFinished();
+    emit this->dropFinished(key_paths);
 }
 
 void GroupFileTableView::contextMenuEvent(QContextMenuEvent *event)

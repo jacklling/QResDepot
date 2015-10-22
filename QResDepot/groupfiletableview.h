@@ -20,7 +20,7 @@ public:
     }
 
 signals:
-    void dropFinished();
+    void dropFinished(QHash<QString , QString> &keyPaths);
 
 public slots:
 

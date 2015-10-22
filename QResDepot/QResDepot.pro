@@ -14,9 +14,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    groupfiletableview.cpp
+    groupfiletableview.cpp \
+    openfile.cpp
 
 HEADERS  += mainwindow.h \
-    groupfiletableview.h
+    groupfiletableview.h \
+    openfile.h
 
 FORMS    += mainwindow.ui
