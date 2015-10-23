@@ -45,7 +45,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //    filterSyntaxLabel = new QLabel(tr("Filter &syntax:"));
     //    filterSyntaxLabel->setBuddy(filterSyntaxComboBox);
     //    ui->filiterLayout;
-
     // 拖拽
     connect(ui->groupFileTableView, &GroupFileTableView::dropFinished, this, &MainWindow::onDropFinished);
     // 信号槽
