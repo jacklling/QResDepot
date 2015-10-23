@@ -30,10 +30,8 @@ public:
     ~MainWindow();
 
     void initHashFile(QString path);
-    //    void actionOpen_with_File();
     void showGroupListView();
     //    void sortAscend();
-    //    void show_contextmenu(const QPoint &pos);
     void showGroupByCurrIndex();
     void saveRes();
     void analysisJsonObject(QJsonObject jobj);

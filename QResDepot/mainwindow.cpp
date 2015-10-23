@@ -454,7 +454,7 @@ bool MainWindow::saveStringToFile(QString writeStr, QString writePath)
         outData.close();
     }else{
         //        this->messageBoxShow("");
-        qDebug()<< "已经存在该文件--继续输出到该文件";
+        qDebug()<< "已经存在该文件--继续输出到该文件    ";
     }
 
     if (outData.open(QFile::ReadWrite | QFile::Truncate)) {
