@@ -14,8 +14,7 @@
 
 #include <QStringListModel>
 
-//读json
-//JSON
+//JSON读json
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonValue>
@@ -28,6 +27,8 @@
 //
 #include <QAction>
 #include <QFileSystemModel>
+
+#include <QComboBox>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -37,6 +38,14 @@ MainWindow::MainWindow(QWidget *parent) :
     groupFilesModel = NULL;
     groupListModel = NULL;
     resFilesModel = NULL;
+
+    //    filterSyntaxComboBox = new QComboBox;
+    //    filterSyntaxComboBox->addItem(tr("png图片"), QRegExp::FixedString);
+    //    filterSyntaxComboBox->addItem(tr("所有"), QRegExp::FixedString);
+    //    filterSyntaxLabel = new QLabel(tr("Filter &syntax:"));
+    //    filterSyntaxLabel->setBuddy(filterSyntaxComboBox);
+    //    ui->filiterLayout;
+
     // 拖拽
     connect(ui->groupFileTableView, &GroupFileTableView::dropFinished, this, &MainWindow::onDropFinished);
     // 信号槽
@@ -105,6 +114,8 @@ void MainWindow::initHashFile(QString path)
         if (index != -1) {
             baseName = baseName.replace(index, 1, "_");
         }
+//        //        if(baseName.indexOf(""))
+//        baseNam
         hashFile[baseName.toUpper()] = filePath;
     }
     initModelWithHashFile();
@@ -498,9 +509,14 @@ void MainWindow::on_groupListView_doubleClicked(const QModelIndex &index)
 
 void MainWindow::on_groupFileTableView_doubleClicked(const QModelIndex &index)
 {
+
+    int row = ui->groupFileTableView->currentIndex().row();
+    QString needMove = this->groupFilesModel->index(row, 0).data().toString();
+
     QMessageBox msgBox;
     msgBox.setText("删除提示");
-    msgBox.setInformativeText("是否删除选中的分组");
+    QString tips = "是否删除组：" + ui->groupListView->currentIndex().data().toString() + "下:" + needMove;
+    msgBox.setInformativeText(tips);
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::Yes);
     int ret = msgBox.exec();
@@ -512,9 +528,8 @@ void MainWindow::on_groupFileTableView_doubleClicked(const QModelIndex &index)
         qDebug() << " 不删除";
         return;
     }
+
     //删除
-    int row = ui->groupFileTableView->currentIndex().row();
-    QString needMove = this->groupFilesModel->index(row, 0).data().toString();
     groupHashFile[ui->groupListView->currentIndex().data().toString()].remove(needMove);
     this->groupFilesModel->removeRow(ui->groupFileTableView->currentIndex().row());
 

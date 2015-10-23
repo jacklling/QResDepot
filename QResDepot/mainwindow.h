@@ -12,14 +12,12 @@ typedef QHash<QString, QSetString> GroupHashFile;
 class QStandardItemModel;
 class QSortFilterProxyModel;
 class QStringListModel;
-class QMenu;
+class QComboBox;
 #include<QModelIndexList>
 
 namespace Ui {
 class MainWindow;
 }
-
-
 
 class MainWindow : public QMainWindow
 {
@@ -83,8 +81,8 @@ private:
     QStringListModel* groupListModel;
     GroupHashFile     groupHashFile;
     QString rootPath;
-
-    QMenu *cmenu;
+    //文件过滤
+    QComboBox *filterSyntaxComboBox;
 };
 
 #endif // MAINWINDOW_H
