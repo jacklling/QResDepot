@@ -68,7 +68,6 @@ private slots:
     void on_saveAction_triggered();
 
     void on_openActionMenu_triggered();
-
 private:
     Ui::MainWindow *ui;
     HashFile hashFile;

@@ -82,6 +82,7 @@ void MainWindow::initModelWithHashFile() {
 
     this->resFilesProxyModel = new QSortFilterProxyModel(this);
     this->resFilesProxyModel->setSourceModel(this->resFilesModel);
+    this->resFilesProxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
     HashFile::Iterator it = this->hashFile.begin();
     int row = 0;
@@ -100,13 +101,15 @@ void MainWindow::initHashFile(QString path)
     dir.setFilter(QDir::Files);
     QDirIterator it(dir, QDirIterator::Subdirectories);
 
+    QString dirName = dir.dirName();
+
     QString baseName;
     QString filePath;
     while(it.hasNext()) {
         it.next();
         QFileInfo fileInfo = it.fileInfo();
         filePath = fileInfo.canonicalFilePath();
-        filePath = filePath.right(filePath.length() - path.length());
+        filePath = filePath.right(filePath.length() - path.length() + dirName.length() + 1);
 
         baseName = fileInfo.fileName();
         int index = baseName.lastIndexOf(".");
@@ -191,7 +194,10 @@ void MainWindow::on_pushButton_clicked()
     this->groupListModel->insertRows(0,1);
     this->groupListModel->setData(this->groupListModel->index(0), text);
     groupHashFile[text] = QSetString();
-    this->showGroupByCurrIndex();
+    //this->showGroupByCurrIndex();
+
+    ui->groupListView->setCurrentIndex(this->groupListModel->index(0));
+
     return ;
 }
 
@@ -349,9 +355,15 @@ void MainWindow::opFileAndShowList(QString path){
         return;
     }
     QString jsonStr = "";
-    while (stream.readLineInto(&line)) {
-        jsonStr = jsonStr + line.trimmed();
-    }
+
+//    while (stream.readLineInto(&line)) {
+//        jsonStr = jsonStr + line.trimmed();
+//    }
+    do {
+        line = stream.readLine();
+        jsonStr += line.trimmed();
+    } while (!line.isNull());
+
     file->close();
     qDebug()<<"------------------test json!----------------";
     QJsonParseError jsonErr;
@@ -386,8 +398,8 @@ void MainWindow::showGroupListView(){
 //筛选
 void MainWindow::on_filterLineEdit_textChanged(const QString &arg1)
 {
-    resFilesProxyModel->setFilterKeyColumn(0);
-    resFilesProxyModel->setFilterFixedString(ui->filterLineEdit->text().toUpper());
+    resFilesProxyModel->setFilterKeyColumn(1);
+    resFilesProxyModel->setFilterWildcard(ui->filterLineEdit->text());
 }
 //save all data
 void MainWindow::saveRes(){
