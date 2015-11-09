@@ -1,3 +1,6 @@
+#if _MSC_VER >= 1600
+#pragma execution_character_set("utf-8")
+#endif
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -116,8 +119,8 @@ void MainWindow::initHashFile(QString path)
         if (index != -1) {
             baseName = baseName.replace(index, 1, "_");
         }
-//        //        if(baseName.indexOf(""))
-//        baseNam
+        //        //        if(baseName.indexOf(""))
+        //        baseNam
         hashFile[baseName.toUpper()] = filePath;
     }
     initModelWithHashFile();
@@ -453,14 +456,23 @@ void MainWindow::saveRes(){
     root = root + "\/Resources.json";
 
     if(resOutPaht.isEmpty() || !pathIsValid(resOutPaht)){
-        this->messageBoxShow(saveStringToFile(writeStr, root)  ? "无效的路径，已保存到"  + root: "无效的路径，保存到" + root + "失败");
+        QString debugStr = "";
+        if(saveStringToFile(writeStr, root)){
+            qDebug() << "保存到默认路径成功\n" + root;
+        }else{
+            this->messageBoxShow("保存到默认路径失败");
+        }
         return;
     }
+    //保存到默认路径
+    saveStringToFile(writeStr, root);
 
+    resOutPaht = resOutPaht + "\/";
     OSsetting.setValue("resOutPaht", resOutPaht);
-    QString outFile = resOutPaht + "\/Resources.json";
+    QString outFile = resOutPaht + "Resources.json";
+
     if(outFile != root){
-        this->messageBoxShow(saveStringToFile(writeStr, root) ? "保存成功" : "保存失败");
+        this->messageBoxShow(saveStringToFile(writeStr, outFile) ? "保存成功" : "保存失败\n请重新保存");
     }
 }
 
